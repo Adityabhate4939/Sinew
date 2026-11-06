@@ -1,0 +1,372 @@
+<title>Sinew Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: left-aligned editorial hero with a live nerve-to-motor demo on the right;
+   below, a signal-path sequence, a spec table, and a fitting form. Amber is the only accent
+   and marks "machine is acting" everywhere it appears. */
+:root{
+  --bg:#0e1216; --panel:#151b21; --panel2:#1c242c; --line:#2b3640;
+  --fg:#e7ebee; --muted:#93a0aa; --signal:#f2b53c; --signal-ink:#1a1305;
+  --metal-a:#8d9ba6; --metal-b:#4d5a65; --flesh:#c99a82; --flesh-dark:#7d5a4a;
+  --grid:rgba(147,160,170,.07);
+  --font-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#e9edef; --panel:#f6f8f9; --panel2:#dde3e7; --line:#c3ccd2;
+  --fg:#12181d; --muted:#53606a; --signal:#a86500; --signal-ink:#fff8ea;
+  --metal-a:#aab6bf; --metal-b:#6d7a85; --flesh:#d7a98f; --flesh-dark:#9a6f5b;
+  --grid:rgba(18,24,29,.06); color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#e9edef; --panel:#f6f8f9; --panel2:#dde3e7; --line:#c3ccd2;
+  --fg:#12181d; --muted:#53606a; --signal:#a86500; --signal-ink:#fff8ea;
+  --metal-a:#aab6bf; --metal-b:#6d7a85; --flesh:#d7a98f; --flesh-dark:#9a6f5b;
+  --grid:rgba(18,24,29,.06); color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1rem/1.6 var(--font-body);
+  padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:48px 48px;overflow-x:hidden}
+.wrap{max-width:1180px;margin:0 auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;letter-spacing:-.02em;line-height:1.02}
+p{margin:0}
+.mono{font-family:var(--font-data)}
+
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1.25rem}
+.brand{display:flex;align-items:center;gap:.6rem;font:800 1.25rem/1 var(--font-display);text-decoration:none;letter-spacing:-.01em}
+.brand i{width:14px;height:14px;border:2px solid var(--signal);border-radius:50%;position:relative;display:block}
+.brand i::after{content:"";position:absolute;inset:2px;background:var(--signal);border-radius:50%}
+.nav ul{display:flex;gap:1.75rem;list-style:none;margin:0;padding:0;font-size:.95rem;color:var(--muted)}
+.nav ul a{text-decoration:none}.nav ul a:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;font:500 .95rem/1 var(--font-body);padding:.9rem 1.25rem;
+  border:1px solid var(--signal);background:var(--signal);color:var(--signal-ink);text-decoration:none;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--fg)}
+@media (max-width:760px){.nav ul{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:3rem;align-items:center;padding-block:3rem 4rem}
+.hero h1{font-size:clamp(2.6rem,6vw,5rem);font-weight:800;font-stretch:75%}
+.hero p.lead{margin-top:1.5rem;max-width:34rem;color:var(--muted);font-size:1.15rem}
+.hero .cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.status{display:inline-flex;align-items:center;gap:.6rem;font:400 .8rem/1 var(--font-data);color:var(--muted);margin-bottom:1.5rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 4px color-mix(in srgb,var(--signal) 25%,transparent)}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr);gap:2.25rem}}
+
+/* demo */
+.demo{background:var(--panel);border:1px solid var(--line);display:grid;min-width:0}
+.demo-head{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 1rem;border-bottom:1px solid var(--line);font:400 .75rem/1.2 var(--font-data);color:var(--muted)}
+.demo canvas{display:block;width:100%;height:96px;border-bottom:1px solid var(--line)}
+.stage{padding:.5rem 1rem 0}
+.stage svg{display:block;width:100%;height:auto;max-height:300px}
+.controls{padding:1rem;border-top:1px solid var(--line);display:grid;gap:1rem}
+.controls label{display:flex;justify-content:space-between;font:500 .85rem/1 var(--font-data)}
+input[type=range]{width:100%;accent-color:var(--signal);height:28px;margin:0;background:transparent}
+.readouts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.readouts div{background:var(--panel);padding:.75rem 1rem}
+.readouts small{display:block;font:400 .7rem/1.3 var(--font-data);color:var(--muted)}
+.readouts b{font:500 1.25rem/1.3 var(--font-data);font-variant-numeric:tabular-nums}
+
+/* sections */
+section{padding-block:4.5rem;border-top:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem;margin-bottom:3rem;align-items:end}
+.sec-head h2{font-size:clamp(2rem,4.2vw,3.25rem);font-weight:700}
+.sec-head p{color:var(--muted);max-width:32rem}
+@media (max-width:800px){.sec-head{grid-template-columns:minmax(0,1fr);gap:1rem}}
+
+/* spec strip */
+.specs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);background:var(--panel)}
+.specs div{padding:1.25rem 1.25rem 1.4rem;border-right:1px solid var(--line)}
+.specs div:last-child{border-right:0}
+.specs b{display:block;font:800 clamp(1.9rem,3.4vw,2.8rem)/1 var(--font-display);font-variant-numeric:tabular-nums}
+.specs b span{font-size:.45em;font-weight:500;color:var(--signal);margin-left:.25em;font-family:var(--font-data)}
+.specs small{display:block;margin-top:.5rem;color:var(--muted);font-size:.9rem}
+@media (max-width:800px){.specs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .specs div:nth-child(2){border-right:0}.specs div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+
+/* signal path: a real sequence */
+.path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;counter-reset:s;position:relative}
+.path::before{content:"";position:absolute;left:0;right:0;top:15px;height:2px;background:linear-gradient(90deg,var(--flesh),var(--signal));opacity:.7}
+.step{padding-right:1.5rem;position:relative}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--signal);font:500 .85rem/1 var(--font-data);margin-bottom:1.25rem;position:relative}
+.step h3{font-size:1.4rem;margin-bottom:.5rem}
+.step p{color:var(--muted);font-size:.95rem}
+.step .t{display:inline-block;margin-top:.75rem;font:400 .75rem/1 var(--font-data);color:var(--signal)}
+@media (max-width:900px){.path{grid-template-columns:minmax(0,1fr);gap:2rem}.path::before{left:15px;right:auto;top:0;bottom:0;width:2px;height:auto;background:linear-gradient(180deg,var(--flesh),var(--signal))}
+  .step{padding-left:3.25rem;padding-right:0}.step::before{position:absolute;left:0;top:0;margin:0}}
+
+/* models table */
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:.95rem}
+th,td{text-align:left;padding:1rem 1.25rem;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+thead th{font:800 1.5rem/1.1 var(--font-display);padding-block:1.25rem}
+thead th small{display:block;font:400 .75rem/1.4 var(--font-data);color:var(--muted);margin-top:.35rem}
+tbody th{font:400 .8rem/1.4 var(--font-data);color:var(--muted);width:22%}
+td{font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font:500 .7rem/1 var(--font-data);padding:.35rem .5rem;border:1px solid var(--signal);color:var(--signal)}
+
+/* fitting */
+.fit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3rem;align-items:start}
+.fit h2{font-size:clamp(2rem,4.2vw,3.25rem);font-weight:700}
+.fit .copy p{color:var(--muted);margin-top:1.25rem;max-width:30rem}
+.fit ul{margin:1.5rem 0 0;padding:0;list-style:none;display:grid;gap:.6rem;font-size:.95rem}
+.fit li{display:flex;gap:.7rem}.fit li::before{content:"";flex:none;width:10px;height:10px;margin-top:.5rem;background:var(--signal);clip-path:polygon(0 0,100% 50%,0 100%)}
+form{background:var(--panel);border:1px solid var(--line);padding:1.5rem;display:grid;gap:1rem}
+.field{display:grid;gap:.4rem;min-width:0}
+.field label{font:400 .8rem/1 var(--font-data);color:var(--muted)}
+input[type=text],input[type=email],select{width:100%;font:400 1rem/1.2 var(--font-body);padding:.85rem .9rem;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:0}
+input:focus,select:focus{border-color:var(--signal)}
+.ok{display:none;padding:1rem;border:1px solid var(--signal);font-size:.95rem}
+.ok.show{display:block}
+@media (max-width:900px){.fit{grid-template-columns:minmax(0,1fr);gap:2rem}}
+
+footer{border-top:1px solid var(--line);padding-block:2rem 3rem;display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between;color:var(--muted);font-size:.85rem}
+footer p{max-width:36rem}
+
+/* single orchestrated moment: the hero headline resolves in once */
+@media (prefers-reduced-motion:no-preference){
+  .hero h1{animation:resolve .9s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes resolve{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  .dot{animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.35}}
+}
+</style>
+
+<div class="wrap">
+  <header class="nav">
+    <a class="brand" href="#top"><i></i>Sinew</a>
+    <ul>
+      <li><a href="#path">How it works</a></li>
+      <li><a href="#specs">Specs</a></li>
+      <li><a href="#models">Models</a></li>
+      <li><a href="#fitting">Fitting</a></li>
+    </ul>
+    <a class="btn" href="#fitting">Book a fitting</a>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div>
+        <div class="status mono"><span class="dot"></span>Fittings open · Nashik, Pune, Bengaluru</div>
+        <h1>Your nerves already know the way.</h1>
+        <p class="lead">Sinew prosthetics read the electrical signal your muscles send when you decide to move, and answer in 14 milliseconds. No buttons, no modes, no learning a new language.</p>
+        <div class="cta">
+          <a class="btn" href="#fitting">Book a fitting</a>
+          <a class="btn ghost" href="#models">Compare models</a>
+        </div>
+      </div>
+
+      <div class="demo" aria-label="Interactive demo of a Sinew finger responding to a muscle signal">
+        <div class="demo-head"><span>EMG channel 3 · flexor digitorum</span><span id="hz">2000 Hz</span></div>
+        <canvas id="wave" aria-hidden="true"></canvas>
+        <div class="stage">
+          <svg viewBox="0 0 600 300" role="img" aria-label="Three-joint robotic finger that curls as the intent slider increases">
+            <defs>
+              <linearGradient id="gm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--metal-a)"/><stop offset="1" stop-color="var(--metal-b)"/></linearGradient>
+              <linearGradient id="gf" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--flesh-dark)"/><stop offset="1" stop-color="var(--flesh)"/></linearGradient>
+            </defs>
+            <!-- forearm: skin fades into the socket -->
+            <rect x="-10" y="106" width="150" height="104" rx="10" fill="url(#gf)"/>
+            <rect x="128" y="98" width="40" height="120" fill="var(--panel2)" stroke="var(--line)"/>
+            <line x1="148" y1="108" x2="148" y2="208" stroke="var(--signal)" stroke-width="2" stroke-dasharray="3 5"/>
+            <!-- palm -->
+            <rect x="168" y="112" width="110" height="92" rx="8" fill="url(#gm)" stroke="var(--line)"/>
+            <path d="M184 128h60M184 144h40M184 190h70" stroke="var(--panel)" stroke-width="2" opacity=".55"/>
+            <!-- finger -->
+            <g id="j1" transform="translate(278 158)">
+              <rect x="0" y="-17" width="130" height="34" rx="17" fill="url(#gm)" stroke="var(--line)"/>
+              <path d="M30 -9h60" stroke="var(--panel)" stroke-width="2" opacity=".5"/>
+              <g id="j2" transform="translate(130 0)">
+                <rect x="0" y="-15" width="100" height="30" rx="15" fill="url(#gm)" stroke="var(--line)"/>
+                <path d="M24 -7h44" stroke="var(--panel)" stroke-width="2" opacity=".5"/>
+                <g id="j3" transform="translate(100 0)">
+                  <rect x="0" y="-13" width="76" height="26" rx="13" fill="url(#gm)" stroke="var(--line)"/>
+                  <circle cx="64" cy="0" r="4" fill="var(--signal)"/>
+                  <circle cx="0" cy="0" r="7" fill="var(--bg)" stroke="var(--signal)" stroke-width="2"/>
+                </g>
+                <circle cx="0" cy="0" r="8" fill="var(--bg)" stroke="var(--signal)" stroke-width="2"/>
+              </g>
+              <circle cx="0" cy="0" r="10" fill="var(--bg)" stroke="var(--signal)" stroke-width="2"/>
+            </g>
+            <text x="30" y="262" fill="var(--muted)" font-family="IBM Plex Mono, monospace" font-size="12">human</text>
+            <text x="188" y="262" fill="var(--muted)" font-family="IBM Plex Mono, monospace" font-size="12">interface</text>
+            <text x="326" y="262" fill="var(--signal)" font-family="IBM Plex Mono, monospace" font-size="12">sinew h1</text>
+          </svg>
+        </div>
+        <div class="controls">
+          <label for="intent"><span>Intent to close hand</span><span id="intentVal">0%</span></label>
+          <input id="intent" type="range" min="0" max="100" value="0">
+        </div>
+        <div class="readouts">
+          <div><small>muscle signal</small><b id="mv">0.05 mV</b></div>
+          <div><small>decode latency</small><b>14 ms</b></div>
+          <div><small>grip force</small><b id="grip">0 N</b></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section id="specs">
+    <div class="sec-head">
+      <h2>Numbers from the bench, not the brochure.</h2>
+      <p>Every figure below comes from the Sinew H1 under load, measured on the same rig we hand to clinicians during a fitting.</p>
+    </div>
+    <div class="specs">
+      <div><b>14<span>ms</span></b><small>From muscle signal to finger movement</small></div>
+      <div><b>70<span>N</span></b><small>Peak grip force, enough for a full jar</small></div>
+      <div><b>410<span>g</span></b><small>Hand and wrist, lighter than the limb it replaces</small></div>
+      <div><b>16<span>h</span></b><small>Typical battery life on one overnight charge</small></div>
+    </div>
+  </section>
+
+  <section id="path">
+    <div class="sec-head">
+      <h2>Four steps between a thought and a grip.</h2>
+      <p>The loop runs continuously. Each stage hands off to the next in under five milliseconds.</p>
+    </div>
+    <div class="path">
+      <div class="step"><h3>Sense</h3><p>Eight dry electrodes in the socket pick up the faint voltage your forearm muscles produce when you intend to move.</p><span class="t">2,000 samples / s</span></div>
+      <div class="step"><h3>Decode</h3><p>A small on-device model separates a pinch from a fist from a relaxed hand, tuned to your own signal during fitting.</p><span class="t">&lt; 5 ms</span></div>
+      <div class="step"><h3>Drive</h3><p>Six brushless micro-motors move the joints in proportion to how hard you flex, so gentle intent gives a gentle grip.</p><span class="t">6 degrees of freedom</span></div>
+      <div class="step"><h3>Feel</h3><p>Fingertip pressure feeds back as a light vibration on the skin of your residual limb, so you know what you are holding.</p><span class="t">0.1 N resolution</span></div>
+    </div>
+  </section>
+
+  <section id="models">
+    <div class="sec-head">
+      <h2>Three models, one signal.</h2>
+      <p>All three use the same decoder and the same app. Pick the one that matches where your limb ends.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead>
+          <tr><td></td>
+            <th scope="col">H1 Hand<small>Below the wrist</small></th>
+            <th scope="col">A2 Forearm<small>Below the elbow</small></th>
+            <th scope="col">L3 Knee<small>Above the knee</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Weight</th><td>410 g</td><td>1.1 kg</td><td>1.9 kg</td></tr>
+          <tr><th scope="row">Peak output</th><td>70 N grip</td><td>70 N grip, 4 Nm wrist</td><td>45 Nm knee torque</td></tr>
+          <tr><th scope="row">Degrees of freedom</th><td>6</td><td>8</td><td>2</td></tr>
+          <tr><th scope="row">Waterproofing</th><td>IP67</td><td>IP65</td><td>IP67</td></tr>
+          <tr><th scope="row">Fitting time</th><td>3 visits</td><td>4 visits</td><td>5 visits</td></tr>
+          <tr><th scope="row">Availability</th><td><span class="pill">Fitting now</span></td><td><span class="pill">Fitting now</span></td><td>Waitlist</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="fitting" class="fit">
+    <div class="copy">
+      <h2>Start with a signal test. It takes twenty minutes.</h2>
+      <p>A clinician places electrodes on your forearm and watches how your muscles respond. You leave knowing which model suits you and how long the fitting will take.</p>
+      <ul>
+        <li>No cost for the signal test</li>
+        <li>Bring a family member or your current prosthetist</li>
+        <li>We reply within two working days</li>
+      </ul>
+    </div>
+    <form id="fitform" novalidate>
+      <div class="field"><label for="name">Full name</label><input id="name" type="text" autocomplete="name" required></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="city">Nearest city</label>
+        <select id="city"><option>Nashik</option><option>Pune</option><option>Bengaluru</option><option>Other</option></select></div>
+      <div class="field"><label for="level">Where does your limb end?</label>
+        <select id="level"><option>Below the wrist</option><option>Below the elbow</option><option>Above the knee</option><option>Not sure yet</option></select></div>
+      <button class="btn" type="submit">Request a signal test</button>
+      <div class="ok" id="ok" role="status"></div>
+    </form>
+  </section>
+
+  <footer>
+    <p>Sinew Systems is a concept brand created for this design. Figures are illustrative and not medical claims.</p>
+    <span class="mono">© 2026 Sinew Systems</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var slider = document.getElementById('intent');
+  var j1 = document.getElementById('j1'), j2 = document.getElementById('j2'), j3 = document.getElementById('j3');
+  var iv = document.getElementById('intentVal'), mv = document.getElementById('mv'), grip = document.getElementById('grip');
+  var canvas = document.getElementById('wave'), ctx = canvas.getContext('2d');
+  var t = 0, userTouched = false, level = 0, data = [];
+
+  function setHand(p){
+    var e = p/100;
+    j1.setAttribute('transform','translate(278 158) rotate('+(e*58)+')');
+    j2.setAttribute('transform','translate(130 0) rotate('+(e*78)+')');
+    j3.setAttribute('transform','translate(100 0) rotate('+(e*60)+')');
+    iv.textContent = Math.round(p)+'%';
+    mv.textContent = (0.05 + e*1.75).toFixed(2)+' mV';
+    grip.textContent = Math.round(e*70)+' N';
+    level = e;
+  }
+
+  function size(){
+    var r = canvas.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, r.width*d); canvas.height = Math.max(1, r.height*d);
+    ctx.setTransform(d,0,0,d,0,0);
+    data = new Array(Math.ceil(r.width/2)).fill(0);
+  }
+  function css(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+  function draw(){
+    var w = canvas.clientWidth, h = canvas.clientHeight, mid = h/2;
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle = css('--line'); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0,mid); ctx.lineTo(w,mid); ctx.stroke();
+    ctx.strokeStyle = css('--signal'); ctx.lineWidth = 1.5; ctx.beginPath();
+    for (var i=0;i<data.length;i++){
+      var x = i*2, y = mid + data[i]*(h*0.45);
+      if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  }
+  function step(){
+    var amp = 0.06 + level*0.94;
+    data.push((Math.random()*2-1)*amp*(0.4+0.6*Math.abs(Math.sin(t*0.9))));
+    data.shift(); t += 0.35;
+  }
+
+  function loop(){
+    if (!userTouched && !reduce){
+      var p = (Math.sin(performance.now()/1900 - 1.2)*0.5+0.5)*100;
+      slider.value = p; setHand(p);
+    }
+    step(); draw(); requestAnimationFrame(loop);
+  }
+
+  slider.addEventListener('input', function(){ userTouched = true; setHand(+slider.value); if (reduce){ for(var k=0;k<data.length;k++) data[k]=(Math.random()*2-1)*(0.06+level*0.94); draw(); } });
+  window.addEventListener('resize', function(){ size(); draw(); });
+  size();
+  if (reduce){ slider.value = 60; setHand(60); for(var k=0;k<data.length;k++) data[k]=(Math.random()*2-1)*(0.06+level*0.94); draw(); }
+  else { setHand(0); requestAnimationFrame(loop); }
+
+  var form = document.getElementById('fitform'), ok = document.getElementById('ok');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var n = document.getElementById('name'), m = document.getElementById('email');
+    if (!n.value.trim()){ ok.className='ok show'; ok.textContent='Enter your name so the clinic knows who to contact.'; n.focus(); return; }
+    if (!/^\S+@\S+\.\S+$/.test(m.value)){ ok.className='ok show'; ok.textContent='Enter a valid email address, for example name@example.com.'; m.focus(); return; }
+    ok.className='ok show';
+    ok.textContent = 'This is a concept page, so nothing was sent. In a live version, '+n.value.trim()+' would hear back within two working days.';
+  });
+})();
+</script>
